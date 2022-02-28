@@ -5,6 +5,7 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     [SerializeField] private int maxHeatlh;
+    [SerializeField] private HealthUI healthUI;
     public bool IsAlive { get; private set; }
     private int currentHealth;
 
@@ -22,6 +23,9 @@ public class Health : MonoBehaviour
             IsAlive = false;
             Dead();
         }
+        float x = (float)currentHealth / (float)maxHeatlh;
+        Debug.Log($"scale = {x}");
+        healthUI.ShowUI(x);
     }
 
     private void Dead ()

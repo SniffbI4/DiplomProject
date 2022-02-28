@@ -12,23 +12,28 @@ public class PlayerShoot : MonoBehaviour
     private void Start()
     {
         currentWeapon = mainWeapon;
+        currentWeapon.TakeWeapon();
     }
 
     public void ChangeWeapon ()
     {
+        currentWeapon.PutAwayWeapon();
         if (currentWeapon == mainWeapon)
         {
+            Debug.Log("Special weapon choosed");
             currentWeapon = specialWeapon;
         }
         else if (currentWeapon == specialWeapon)
         {
+            Debug.Log("Main weapon choosed");
             currentWeapon = mainWeapon;
         }
+        currentWeapon.TakeWeapon();
     }
 
-    public void Shot ()
+    public void Fire ()
     { 
-        currentWeapon.Shot();
+        currentWeapon.Fire();
     }
 
     public void ReloadWeapon ()

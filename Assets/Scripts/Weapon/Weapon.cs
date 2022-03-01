@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Weapon : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class Weapon : MonoBehaviour
     [Header ("SOUNDS")]
     [SerializeField] private AudioClip audioShot;
     [SerializeField] private AudioClip audioReload;
+
+    [SerializeField] private UnityEvent OnShot;
 
     private AudioSource audio;
     private bool isReadyToShoot = false;
@@ -46,24 +49,29 @@ public class Weapon : MonoBehaviour
     {
         if (isReadyToShoot)
         {
-            isReadyToShoot = false;
-            currentAmmoInClip--;
-            UpdateAmmoUI();
+            if (currentAmmoInClip > 0)
+            {
+                isReadyToShoot = false;
+                currentAmmoInClip--;
+                UpdateAmmoUI();
 
-            Shot();
-            StartCoroutine(ShotCuro(timeBetweenShots));
+                Shot();
+                StartCoroutine(ShotCuro(timeBetweenShots));
+            }
         }
     }
 
     public virtual void Shot()
     {
         audio.PlayOneShot(audioShot);
+        OnShot.Invoke();
     }
 
     public void Reload ()
     {
         if (currentAmmoInClip == maxAmmoInClip || isOnReload)
             return;
+        UIManager.instance.ReloadAnim(timeToReload);
         isOnReload = true;
         StopAllCoroutines();
         isReadyToShoot = false;
@@ -109,11 +117,20 @@ public class Weapon : MonoBehaviour
     public void PutAwayWeapon ()
     {
         StopAllCoroutines();
+        UIManager.instance.StopAnimation();
         audio.Stop();   
     }
 
     public void UpdateAmmoUI ()
     {
+        UIManager.instance.ShowAmmo(currentAmmoInClip, currentAmmo);
+    }
+
+    public void AddAmmo ()
+    {
+        currentAmmo += maxAmmoInClip;
+        if (currentAmmo > maxAmmoCount)
+            currentAmmo = maxAmmoCount;
         UIManager.instance.ShowAmmo(currentAmmoInClip, currentAmmo);
     }
 }

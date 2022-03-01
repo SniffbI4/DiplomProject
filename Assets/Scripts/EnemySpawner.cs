@@ -24,6 +24,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float maxRadius;
 
     private Vector3 enemyPosition;
+    private Vector3 enemySize = new Vector3(1f, 2f, 1f);
 
     private void Awake()
     {
@@ -61,6 +62,8 @@ public class EnemySpawner : MonoBehaviour
     {
         //Debug.Log($"SpawnEnemy. EnemyCount = {enemiesOnScene.Count}");
         int randEnemyIndex = Random.Range(0, enemiesOnScene.Count);
+        while (enemiesOnScene[randEnemyIndex].activeSelf)
+            randEnemyIndex = Random.Range(0, enemiesOnScene.Count);
         GetNewEnemyPosition();
         while (!CanEnemySpawnHere())
         {
@@ -68,7 +71,7 @@ public class EnemySpawner : MonoBehaviour
         }
         enemiesOnScene[randEnemyIndex].transform.position = enemyPosition;
         enemiesOnScene[randEnemyIndex].SetActive(true);
-        enemiesOnScene.Remove(enemiesOnScene[randEnemyIndex]);
+        //enemiesOnScene.Remove(enemiesOnScene[randEnemyIndex]);
     }
 
     private void GetNewEnemyPosition ()
@@ -77,22 +80,21 @@ public class EnemySpawner : MonoBehaviour
         float rad = Random.Range(minRadius, maxRadius);
             
         float z = Mathf.Sqrt(Mathf.Pow(rad, 2) - Mathf.Pow(x, 2));
-        Debug.Log($"x = {x}, z = {z}");
 
         enemyPosition = new Vector3(playerTransform.position.x + x, playerTransform.position.y, playerTransform.position.z + z);
-        Debug.Log($"enemyPosition = {enemyPosition}");
     }
 
     private bool CanEnemySpawnHere ()
     {
-        Ray ray = new Ray(enemyPosition, enemyPosition-new Vector3(0,1,0));
+        Collider[] colliders = Physics.OverlapBox(enemyPosition, enemySize);
+
+        Ray ray = new Ray(enemyPosition, enemyPosition - new Vector3(0, 1, 0));
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 100))
-        { 
+        if (!Physics.Raycast(ray, out hit, 100) || colliders.Length > 1)
+            return false;
+        else
             return true;
-        }
-        else return false;
     }
 
     public Transform GetPlayerPosition ()

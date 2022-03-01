@@ -20,12 +20,10 @@ public class PlayerShoot : MonoBehaviour
         currentWeapon.PutAwayWeapon();
         if (currentWeapon == mainWeapon)
         {
-            Debug.Log("Special weapon choosed");
             currentWeapon = specialWeapon;
         }
         else if (currentWeapon == specialWeapon)
         {
-            Debug.Log("Main weapon choosed");
             currentWeapon = mainWeapon;
         }
         currentWeapon.TakeWeapon();
@@ -39,5 +37,10 @@ public class PlayerShoot : MonoBehaviour
     public void ReloadWeapon ()
     {
         currentWeapon.Reload();
+    }
+
+    public void AddAmmoToCurrentWeapon ()
+    {
+        currentWeapon.AddAmmo();
     }
 }

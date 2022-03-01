@@ -14,12 +14,9 @@ public class Enemy : MonoBehaviour
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
-    void Start()
-    {
-    }
-
     void Update()
     {
         navMeshAgent.destination = EnemySpawner.instance.GetPlayerPosition().position;
+        //Debug.Log($"Target = {navMeshAgent.destination}");
     }
 }

@@ -105,6 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3505595972877070534}
   - component: {fileID: 3505595972877070537}
+  - component: {fileID: 2256063207289597761}
   - component: {fileID: 3505595972877070536}
   - component: {fileID: 3505595972877070539}
   - component: {fileID: 3505595972877070532}
@@ -126,7 +127,7 @@ Transform:
   m_GameObject: {fileID: 3505595972877070538}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 29.2, y: 0, z: 22.2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_Children:
   - {fileID: 3505595971807826259}
   - {fileID: 3505595973262565100}
@@ -141,6 +142,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3505595972877070538}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2256063207289597761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3505595972877070538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b131672a8d9a42f45844cbac6dc638d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 20
 --- !u!23 &3505595972877070536
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -190,7 +204,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3505595972877070538}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 2
@@ -203,7 +217,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3505595972877070538}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5bb7ea8ee4b5cf43b3c0aed887d39ca, type: 3}
   m_Name: 
@@ -220,8 +234,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ec6b0e277b6589458b555221b80d508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHeatlh: 100
+  maxHeatlh: 150
   healthUI: {fileID: 3505595973262565096}
+  OnDead:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3505595972877070538}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!195 &3505595972877070535
 NavMeshAgent:
   m_ObjectHideFlags: 0

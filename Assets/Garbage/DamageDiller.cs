@@ -6,12 +6,9 @@ public class DamageDiller : MonoBehaviour
 {
     [SerializeField] private int damage;
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.collider.CompareTag("Enemy"))
-        {
-            collision.collider.GetComponent<Health>().ApplyDamage(damage);
-        }
-        Destroy(gameObject);
+        if (other.CompareTag("Player"))
+            other.GetComponent<Health>().ApplyDamage(damage);
     }
 }

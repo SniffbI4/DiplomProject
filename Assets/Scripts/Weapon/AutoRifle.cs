@@ -10,6 +10,7 @@ public class AutoRifle : Weapon
     public override void Shot()
     {
         base.Shot();
+        
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
 
@@ -26,7 +27,7 @@ public class AutoRifle : Weapon
     {
         CheckAmmo();
 
-        Vector3 direction = transform.forward * 30;
-        Debug.DrawRay(transform.position, direction, Color.red);
+        //Vector3 direction = transform.forward * 30;
+        //Debug.DrawRay(transform.position, direction, Color.red);
     }
 }

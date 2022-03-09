@@ -9,6 +9,7 @@ public class HealthEnemyUI : HealthUI
 
     private void Start()
     {
+        
         mainCamera = Camera.main.gameObject;
     }
 

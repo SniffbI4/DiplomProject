@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MiniGun : Weapon
@@ -27,6 +25,7 @@ public class MiniGun : Weapon
         {
             if (hit.collider.CompareTag("Enemy"))
             {
+                base.ShowBlood(hit.point);
                 hit.collider.GetComponent<Health>().ApplyDamage(damagePerShot);
             }
         }
@@ -39,14 +38,14 @@ public class MiniGun : Weapon
         Debug.DrawRay(transform.position, direction, Color.red);
     }
 
-    private void OnDrawGizmos()
-    {
-        Color color = Color.yellow;
-        color.a = 0.6f;
-        Gizmos.color = color;
+    //private void OnDrawGizmos()
+    //{
+    //    Color color = Color.yellow;
+    //    color.a = 0.6f;
+    //    Gizmos.color = color;
 
-        Gizmos.DrawSphere(transform.position + direction, dispersion);
-    }
+    //    Gizmos.DrawSphere(transform.position + direction, dispersion);
+    //}
 }
 
 

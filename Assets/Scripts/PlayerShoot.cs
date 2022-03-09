@@ -2,15 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent (typeof(ActorView))]
 public class PlayerShoot : MonoBehaviour
 {
     [SerializeField] private Weapon mainWeapon;
     [SerializeField] private Weapon specialWeapon;
 
     private Weapon currentWeapon;
+    private ActorView actorView;
 
     private void Start()
     {
+        actorView = GetComponent<ActorView>();
+
         currentWeapon = mainWeapon;
         currentWeapon.TakeWeapon();
     }
@@ -36,6 +40,7 @@ public class PlayerShoot : MonoBehaviour
 
     public void ReloadWeapon ()
     {
+        //actorView.PlayReloadStart();
         currentWeapon.Reload();
     }
 

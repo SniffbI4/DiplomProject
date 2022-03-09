@@ -11,24 +11,42 @@ public class Health : MonoBehaviour
     private int currentHealth;
 
     [SerializeField] private UnityEvent OnDead;
+
+    public delegate void HealthChanged(float defuse);
+    public event HealthChanged OnHealthChanged;
+
+    public delegate void EnemyDead();
+    public event EnemyDead OnEnemyDead;
         
     private void Start()
     {
+        Refresh();
+    }
+
+    public void Refresh ()
+    {
+        if (!healthUI.gameObject.activeSelf)
+            healthUI.gameObject.SetActive(true);
         currentHealth = maxHeatlh;
         IsAlive = true;
-        healthUI.ShowUI(1f);    
+
+        if (OnHealthChanged != null)
+            OnHealthChanged((float)currentHealth / (float)maxHeatlh);
     }
 
     public void ApplyDamage (int damage)
     {
-        currentHealth -= damage;
-        if (currentHealth<=0)
+        if (IsAlive)
         {
-            IsAlive = false;
-            Dead();
+            currentHealth -= damage;
+            if (currentHealth <= 0)
+            {
+                IsAlive = false;
+                Dead();
+            }
+            if (OnHealthChanged != null)
+                OnHealthChanged((float)currentHealth / (float)maxHeatlh);
         }
-        float x = (float)currentHealth / (float)maxHeatlh;
-        healthUI.ShowUI(x);
     }
 
     public void RecoveryHealth (int health)
@@ -37,13 +55,16 @@ public class Health : MonoBehaviour
         if (currentHealth > maxHeatlh)
             currentHealth = maxHeatlh;
 
-        float x = (float)currentHealth / (float)maxHeatlh;
-        healthUI.ShowUI(x);
+        if (OnHealthChanged != null)
+            OnHealthChanged((float)currentHealth / (float)maxHeatlh);
     }
 
     private void Dead ()
     {
-        ResourseSpawner.instance.SpawnResourse(transform.position);
+        healthUI.gameObject.SetActive(false);
         OnDead.Invoke();
+
+        if (OnEnemyDead!=null)
+            OnEnemyDead();
     }
 }

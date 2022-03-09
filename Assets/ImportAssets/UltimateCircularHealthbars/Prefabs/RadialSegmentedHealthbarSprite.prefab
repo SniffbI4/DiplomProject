@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 7883941298912314718}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6.1930094, y: 6.1930094, z: 6.1930094}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -47,6 +47,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -94,9 +95,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e7c211f26e4e1443be7aa191596ed81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SegmentCount: 5
+  SegmentCount: 20
   RemovedSegments: 0
-  Spacing: 0.02
+  Spacing: 0.005
   Color: {r: 0.08669758, g: 1, b: 0, a: 1}
   Radius: 0.4
   LineWidth: 0.07

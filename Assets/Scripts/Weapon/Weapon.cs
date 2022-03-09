@@ -5,6 +5,9 @@ using UnityEngine.Events;
 
 public class Weapon : MonoBehaviour
 {
+    [SerializeField] private ParticleSystem bloodParticle;
+    [SerializeField] private GameObject weaponModel;
+
     [Header ("AMMO")]
     [SerializeField] int maxAmmoCount;
     [SerializeField] int maxAmmoInClip;
@@ -21,6 +24,19 @@ public class Weapon : MonoBehaviour
     [SerializeField] private AudioClip audioReload;
 
     [SerializeField] private UnityEvent OnShot;
+
+    #region Делегаты и события
+    public delegate void WeaponChanged();
+    public delegate void WeaponReloaded(float timeToReload);
+    public delegate void WeaponAmmoChanged(int x, int y);
+
+    public static event WeaponAmmoChanged OnWeaponFire;
+    public static event WeaponReloaded OnWeaponReloadStart;
+    public static event WeaponAmmoChanged OnWeaponReloadEnd;
+    public static event WeaponAmmoChanged OnWeaponActivated;
+    public static event WeaponChanged OnWeaponDeactivated;
+    public static event WeaponAmmoChanged OnWeaponAmmoChanged;
+    #endregion
 
     private AudioSource audio;
     private bool isReadyToShoot = false;
@@ -53,7 +69,9 @@ public class Weapon : MonoBehaviour
             {
                 isReadyToShoot = false;
                 currentAmmoInClip--;
-                UpdateAmmoUI();
+
+                //OnWeaponFire(currentAmmoInClip, currentAmmo);
+                OnWeaponAmmoChanged(currentAmmoInClip, currentAmmo);
 
                 Shot();
                 StartCoroutine(ShotCuro(timeBetweenShots));
@@ -71,7 +89,9 @@ public class Weapon : MonoBehaviour
     {
         if (currentAmmoInClip == maxAmmoInClip || isOnReload)
             return;
-        UIManager.instance.ReloadAnim(timeToReload);
+
+        OnWeaponReloadStart(timeToReload);
+
         isOnReload = true;
         StopAllCoroutines();
         isReadyToShoot = false;
@@ -100,7 +120,15 @@ public class Weapon : MonoBehaviour
         }
         isReadyToShoot = true;
         isOnReload = false;
-        UpdateAmmoUI();
+
+        OnWeaponReloadEnd(currentAmmoInClip, currentAmmo);
+        OnWeaponAmmoChanged(currentAmmoInClip, currentAmmo);
+    }
+
+    protected void ShowBlood (Vector3 position)
+    {
+        bloodParticle.transform.position = position;
+        bloodParticle.Play();
     }
 
     public void TakeWeapon ()
@@ -111,19 +139,18 @@ public class Weapon : MonoBehaviour
             isOnReload = false;
         }
 
-        UpdateAmmoUI();
+        weaponModel.SetActive(true);
+
+        OnWeaponActivated(currentAmmoInClip, currentAmmo);
     }
 
     public void PutAwayWeapon ()
     {
         StopAllCoroutines();
-        UIManager.instance.StopAnimation();
-        audio.Stop();   
-    }
+        audio.Stop();
+        weaponModel.SetActive(false);
 
-    public void UpdateAmmoUI ()
-    {
-        UIManager.instance.ShowAmmo(currentAmmoInClip, currentAmmo);
+        OnWeaponDeactivated();
     }
 
     public void AddAmmo ()
@@ -131,6 +158,6 @@ public class Weapon : MonoBehaviour
         currentAmmo += maxAmmoInClip;
         if (currentAmmo > maxAmmoCount)
             currentAmmo = maxAmmoCount;
-        UIManager.instance.ShowAmmo(currentAmmoInClip, currentAmmo);
+        OnWeaponAmmoChanged(currentAmmoInClip, currentAmmo);
     }
 }

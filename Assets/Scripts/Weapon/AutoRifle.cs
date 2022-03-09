@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AutoRifle : Weapon
@@ -18,6 +16,7 @@ public class AutoRifle : Weapon
         {
             if (hit.collider.CompareTag("Enemy"))
             {
+                base.ShowBlood(hit.point);
                 hit.collider.GetComponent<Health>().ApplyDamage(damagePerShot);
             }
         }

@@ -1,15 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof (PlayerMovement), typeof(PlayerShoot))]
 public class PlayerInput : MonoBehaviour
 {
-    PlayerMovement playerMovement;
-    PlayerShoot playerShoot;
+    [SerializeField] private UnityEvent testAction;
+
+    private PlayerMovement playerMovement;
+    private NewPlayerMovement newPlayerMovement;
+    private PlayerShoot playerShoot;
+    private bool isAiming = false;
 
     private void Awake()
     {
+        newPlayerMovement = GetComponent<NewPlayerMovement>();
         playerMovement = GetComponent<PlayerMovement>();
         playerShoot = GetComponent<PlayerShoot>();
     }
@@ -22,6 +26,12 @@ public class PlayerInput : MonoBehaviour
             playerShoot.Fire();
         }
 
+        //Аиминг
+        if (Input.GetMouseButtonDown(1))
+            isAiming = true;
+        if (Input.GetMouseButtonUp(1))
+            isAiming = false;
+
         //Перезарядка
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -33,18 +43,27 @@ public class PlayerInput : MonoBehaviour
         if (mouseWheel >= 0.1f || mouseWheel <= -0.1f)
             playerShoot.ChangeWeapon();
 
-        //Перемещение персонажа
+        //Направление перемещения персонажа
         float x = Input.GetAxis(GameData.HORIZONTAL_AXIS);
         float y = Input.GetAxis(GameData.VERTICAL_AXIS);
 
         //Направление прицела
         Vector3 mousePosition = Input.mousePosition;
+
+        //Перемещение
+        //newPlayerMovement.Move(x, y, mousePosition);
         playerMovement.Move(x, y, mousePosition);
 
-        //Проверка (тесты)
+        //Перекат
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            EnemySpawner.instance.SpawnEnemy();
+            playerMovement.Roll(x, y);
+        }
+
+        //ТЕСТИРОВАНИЕ
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            testAction.Invoke();
         }
     }
 }

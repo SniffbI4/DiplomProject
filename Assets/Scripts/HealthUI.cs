@@ -12,7 +12,7 @@ public class HealthUI : MonoBehaviour
         health.OnHealthChanged += Health_OnHealthChanged;
     }
 
-    private void Health_OnHealthChanged(float defuse)
+    private void Health_OnHealthChanged(float defuse, bool isDamaged)
     {
         ShowUI(defuse);
     }

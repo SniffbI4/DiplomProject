@@ -13,7 +13,7 @@ public class EnemySpawner : MonoBehaviour
 {
     public static EnemySpawner instance { get; private set; }
 
-    [SerializeField] private Transform playerTransform;
+    private Transform playerTransform;
 
     [SerializeField , Header("Enemies")]
     List<EnemyPrefabs> enemies;
@@ -37,6 +37,11 @@ public class EnemySpawner : MonoBehaviour
         }
 
         Destroy(this.gameObject);
+    }
+
+    public void SetPlayerPosition (Transform playerTransform)
+    {
+        this.playerTransform = playerTransform;
     }
 
     private void InicializeEnemies ()

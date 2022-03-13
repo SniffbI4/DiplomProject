@@ -4,6 +4,7 @@ public class AutoRifle : Weapon
 {
     [Header ("AmmoRifleSettings")]
     [SerializeField] int damagePerShot;
+    [SerializeField] float bulletRadius;
 
     public override void Shot()
     {
@@ -12,12 +13,18 @@ public class AutoRifle : Weapon
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 30))
+        if (Physics.SphereCast(ray, bulletRadius, out hit, 30))
         {
             if (hit.collider.CompareTag("Enemy"))
             {
                 base.ShowBlood(hit.point);
                 hit.collider.GetComponent<Health>().ApplyDamage(damagePerShot);
+            }
+
+            if (hit.collider.CompareTag("Transformer"))
+            {
+                //Debug.Log("œŒœ¿ƒ¿Õ»≈ ¬ “–¿Õ—‘Œ–Ã¿“Œ–");
+                hit.collider.GetComponent<Transformer>().Break();
             }
         }
     }

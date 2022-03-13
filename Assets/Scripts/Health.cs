@@ -12,7 +12,7 @@ public class Health : MonoBehaviour
 
     [SerializeField] private UnityEvent OnDead;
 
-    public delegate void HealthChanged(float defuse);
+    public delegate void HealthChanged(float defuse, bool isDamaged=false);
     public event HealthChanged OnHealthChanged;
 
     public delegate void EnemyDead();
@@ -45,7 +45,7 @@ public class Health : MonoBehaviour
                 Dead();
             }
             if (OnHealthChanged != null)
-                OnHealthChanged((float)currentHealth / (float)maxHeatlh);
+                OnHealthChanged((float)currentHealth / (float)maxHeatlh, true);
         }
     }
 

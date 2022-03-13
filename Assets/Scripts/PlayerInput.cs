@@ -63,7 +63,7 @@ public class PlayerInput : MonoBehaviour
         //“≈—“»–Œ¬¿Õ»≈
         if (Input.GetKeyDown(KeyCode.N))
         {
-            testAction.Invoke();
+            EnemySpawner.instance.SpawnEnemy();
         }
     }
 }

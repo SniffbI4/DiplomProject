@@ -28,8 +28,11 @@ public class TestPostProcessing : MonoBehaviour
         health.OnHealthChanged += Health_OnHealthChanged;
     }
 
-    private void Health_OnHealthChanged(float defuse)
+    private void Health_OnHealthChanged(float defuse, bool isDamaged)
     {
+        if (!isDamaged)
+            return;
+
         float value = 1 - defuse;
         if (value >= 1)
             isFull = true;

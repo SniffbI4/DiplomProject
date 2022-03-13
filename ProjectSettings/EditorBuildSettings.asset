@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Menu.unity
-    guid: aa3f0db25c4523d43bc24a895f71e1b7
+    path: Assets/Garbage/MenuScene.unity
+    guid: e04fca571522f85498b5b7e15880d9bc
   - enabled: 1
-    path: Assets/Flooded_Grounds/Scenes/Scene_A.unity
-    guid: c0d944ca9defd20449bc336e50d75a08
+    path: Assets/Garbage/New Scene.unity
+    guid: b0d9bb273d3b64b4ba0674e8b5c235ce
   m_configObjects: {}

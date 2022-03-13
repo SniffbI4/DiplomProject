@@ -12,8 +12,8 @@ public class EnemyWaveCreator : MonoBehaviour
 
     private void Start()
     {
-        timer = GetComponent<Timer>();
-        StartNewWave();
+        //timer = GetComponent<Timer>();
+        Invoke("StartNewWave", 2f);
     }
 
     public void StartNewWave()

@@ -22,6 +22,7 @@ public class SniperRifle : Weapon
         {
             if (hits[i].collider.CompareTag("Enemy"))
             {
+                base.ShowBlood(hits[i].point);
                 hits[i].collider.GetComponent<Health>().ApplyDamage(damage);
                 damage -= damageAbatement;
             }
@@ -36,8 +37,8 @@ public class SniperRifle : Weapon
     {
         base.CheckAmmo();
 
-        Vector3 direction = transform.forward * 50;
-        Debug.DrawRay(transform.position, direction, Color.red);
+        //Vector3 direction = transform.forward * 50;
+        //Debug.DrawRay(transform.position, direction, Color.red);
     }
 
 }

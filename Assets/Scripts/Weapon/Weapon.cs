@@ -28,7 +28,7 @@ public class Weapon : MonoBehaviour
     #region Делегаты и события
     public delegate void WeaponChanged();
     public delegate void WeaponReloaded(float timeToReload);
-    public delegate void WeaponAmmoChanged(int x, int y);
+    public delegate void WeaponAmmoChanged(int currentAmmoInClip, int currentAmmo);
 
     public static event WeaponAmmoChanged OnWeaponFire;
     public static event WeaponReloaded OnWeaponReloadStart;
@@ -71,7 +71,8 @@ public class Weapon : MonoBehaviour
                 currentAmmoInClip--;
 
                 //OnWeaponFire(currentAmmoInClip, currentAmmo);
-                OnWeaponAmmoChanged(currentAmmoInClip, currentAmmo);
+                if (OnWeaponAmmoChanged!=null)
+                    OnWeaponAmmoChanged(currentAmmoInClip, currentAmmo);
 
                 Shot();
                 StartCoroutine(ShotCuro(timeBetweenShots));
@@ -90,7 +91,8 @@ public class Weapon : MonoBehaviour
         if (currentAmmoInClip == maxAmmoInClip || isOnReload)
             return;
 
-        OnWeaponReloadStart(timeToReload);
+        if (OnWeaponReloadStart!=null)
+            OnWeaponReloadStart(timeToReload);
 
         isOnReload = true;
         StopAllCoroutines();
@@ -121,8 +123,9 @@ public class Weapon : MonoBehaviour
         isReadyToShoot = true;
         isOnReload = false;
 
-        OnWeaponReloadEnd(currentAmmoInClip, currentAmmo);
-        OnWeaponAmmoChanged(currentAmmoInClip, currentAmmo);
+        //OnWeaponReloadEnd(currentAmmoInClip, currentAmmo);
+        if (OnWeaponAmmoChanged!=null)
+            OnWeaponAmmoChanged(currentAmmoInClip, currentAmmo);
     }
 
     protected void ShowBlood (Vector3 position)
@@ -141,7 +144,8 @@ public class Weapon : MonoBehaviour
 
         weaponModel.SetActive(true);
 
-        OnWeaponActivated(currentAmmoInClip, currentAmmo);
+        if (OnWeaponActivated != null)
+            OnWeaponActivated(currentAmmoInClip, currentAmmo);
     }
 
     public void PutAwayWeapon ()
@@ -150,7 +154,8 @@ public class Weapon : MonoBehaviour
         audio.Stop();
         weaponModel.SetActive(false);
 
-        OnWeaponDeactivated();
+        if (OnWeaponDeactivated!=null)
+            OnWeaponDeactivated();
     }
 
     public void AddAmmo ()
@@ -158,6 +163,8 @@ public class Weapon : MonoBehaviour
         currentAmmo += maxAmmoInClip;
         if (currentAmmo > maxAmmoCount)
             currentAmmo = maxAmmoCount;
-        OnWeaponAmmoChanged(currentAmmoInClip, currentAmmo);
+
+        if (OnWeaponAmmoChanged!=null)
+            OnWeaponAmmoChanged(currentAmmoInClip, currentAmmo);
     }
 }

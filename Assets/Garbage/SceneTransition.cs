@@ -55,6 +55,5 @@ public class SceneTransition : MonoBehaviour
     {
         shouldPlayOpeningAnimation = true;
         loadingSceneOperation.allowSceneActivation = true;
-
     }
 }

@@ -66,7 +66,11 @@ public class Mutant : MonoBehaviour
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, attackRange, attackedLayer);
         if (colliders.Length != 0)
-            colliders[0].GetComponent<Health>().ApplyDamage(damage);
+        {
+            Health health;
+            colliders[0].TryGetComponent<Health>(out health);
+            health.ApplyDamage(damage);
+        }
     }
 
     public void EnemyCanGo ()

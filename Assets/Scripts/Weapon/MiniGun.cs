@@ -13,11 +13,12 @@ public class MiniGun : Weapon
     {
         base.Shot();
 
+        CameraEffects.instance.ShakeCamera(1, 0.2f);
+
         direction = transform.forward * dispersionDistance;
         direction.x += Random.Range(-dispersion / 2, dispersion / 2);
         direction.y += Random.Range(-dispersion / 2, dispersion / 2);
         
-
         Ray ray = new Ray(transform.position, direction);
         RaycastHit hit;
 
@@ -34,8 +35,7 @@ public class MiniGun : Weapon
     private void Update()
     {
         CheckAmmo();
-
-        Debug.DrawRay(transform.position, direction, Color.red);
+        //Debug.DrawRay(transform.position, direction, Color.red);
     }
 
     //private void OnDrawGizmos()

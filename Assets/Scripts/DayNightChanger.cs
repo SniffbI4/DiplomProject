@@ -36,20 +36,15 @@ public class DayNightChanger : MonoBehaviour
         if (TimeOfDay >= 1) TimeOfDay -= 1;
 
         RenderSettings.skybox.Lerp(NightSkybox, DaySkybox, SkyboxCurve.Evaluate(TimeOfDay));
-        //Debug.Log($"TimeOfDay={TimeOfDay}. SkyboxCurve={SkyboxCurve.Evaluate(TimeOfDay)}. Lerp(-1, 1) = {Mathf.Lerp(-1f, 1f, SkyboxCurve.Evaluate(TimeOfDay))}");
 
         if (SkyboxCurve.Evaluate(TimeOfDay) > 0.1f)
         {
             RenderSettings.sun = sun;
-            //sun.gameObject.SetActive(true);
-            //moon.gameObject.SetActive(false);
             OnDayStarted();
         }
         else
         {
             RenderSettings.sun = moon;
-            //moon.gameObject.SetActive(true);
-            //sun.gameObject.SetActive(false);
             OnDayEnded();
         }
         DynamicGI.UpdateEnvironment();

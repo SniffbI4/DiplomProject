@@ -7,13 +7,10 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private UnityEvent testAction;
 
     private PlayerMovement playerMovement;
-    private NewPlayerMovement newPlayerMovement;
     private PlayerShoot playerShoot;
-    private bool isAiming = false;
 
     private void Awake()
     {
-        newPlayerMovement = GetComponent<NewPlayerMovement>();
         playerMovement = GetComponent<PlayerMovement>();
         playerShoot = GetComponent<PlayerShoot>();
     }
@@ -25,12 +22,6 @@ public class PlayerInput : MonoBehaviour
         {
             playerShoot.Fire();
         }
-
-        //Аиминг
-        if (Input.GetMouseButtonDown(1))
-            isAiming = true;
-        if (Input.GetMouseButtonUp(1))
-            isAiming = false;
 
         //Перезарядка
         if (Input.GetKeyDown(KeyCode.R))
@@ -51,7 +42,6 @@ public class PlayerInput : MonoBehaviour
         Vector3 mousePosition = Input.mousePosition;
 
         //Перемещение
-        //newPlayerMovement.Move(x, y, mousePosition);
         playerMovement.Move(x, y, mousePosition);
 
         //Перекат
@@ -60,10 +50,5 @@ public class PlayerInput : MonoBehaviour
             playerMovement.Roll(x, y);
         }
 
-        //ТЕСТИРОВАНИЕ
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            EnemySpawner.instance.SpawnEnemy();
-        }
     }
 }

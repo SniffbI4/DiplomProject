@@ -62,7 +62,7 @@ public class Health : MonoBehaviour
     private void Dead ()
     {
         healthUI.gameObject.SetActive(false);
-        OnDead.Invoke();
+        //OnDead.Invoke();
 
         if (OnEnemyDead!=null)
             OnEnemyDead();

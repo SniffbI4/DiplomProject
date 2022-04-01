@@ -66,7 +66,7 @@ public class EnemySpawner : MonoBehaviour
     {
         foreach (GameObject go in enemiesOnScene)
         {
-            if (go.activeSelf)
+            if (go.activeSelf && !go.GetComponent<Health>().IsAlive)
             {
                 go.GetComponent<Mutant>().Refresh();
                 go.SetActive(false);
@@ -79,16 +79,18 @@ public class EnemySpawner : MonoBehaviour
         int randEnemyIndex = Random.Range(0, enemiesOnScene.Count);
         while (enemiesOnScene[randEnemyIndex].activeSelf)
             randEnemyIndex = Random.Range(0, enemiesOnScene.Count);
-        GetNewEnemyPosition();
-        while (!CanEnemySpawnHere())
+       
+        do
         {
-            GetNewEnemyPosition();
+            enemyPosition = GetNewEnemyPosition();
         }
+        while (!CanEnemySpawnHere());
+
         enemiesOnScene[randEnemyIndex].transform.position = enemyPosition;
         enemiesOnScene[randEnemyIndex].SetActive(true);
     }
 
-    private void GetNewEnemyPosition ()
+    private Vector3 GetNewEnemyPosition ()
     {
         #region Old
         //float x = Random.Range(-maxRadius, maxRadius);
@@ -102,8 +104,10 @@ public class EnemySpawner : MonoBehaviour
         #region New
         float x = Random.Range(-maxRadius, maxRadius);
         float z = Random.Range(-maxRadius, maxRadius);
+        if (x > -minRadius && x < minRadius && z > -minRadius && z < minRadius)
+            return Vector3.zero;
 
-        enemyPosition = new Vector3(playerTransform.position.x + x, playerTransform.position.y, playerTransform.position.z + z);
+       return new Vector3(playerTransform.position.x + x, playerTransform.position.y, playerTransform.position.z + z);
         #endregion
 
     }
@@ -124,11 +128,13 @@ public class EnemySpawner : MonoBehaviour
             if (path.status == NavMeshPathStatus.PathComplete) get_correct_point = true;
         }
         #endregion
-
     }
 
     private bool CanEnemySpawnHere ()
     {
+        if (enemyPosition == Vector3.zero)
+            return false;
+
         Ray ray = new Ray(enemyPosition, enemyPosition - new Vector3(0, 1, 0));
         RaycastHit hit;
 

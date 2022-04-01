@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class GameData
 {
     #region Constants
@@ -20,5 +22,8 @@ public class GameData
     public const string ANIM_RUN_ENEMY_LEVEL = "RunLevel";
     public const string ANIM_ATTACK_ENEMY_LEVEL = "AttackLevel";
     public const string ANIM_DEATH_ENEMY_LEVEL = "DeathLevel";
+    #endregion
+
+    #region Inputs
     #endregion
 }

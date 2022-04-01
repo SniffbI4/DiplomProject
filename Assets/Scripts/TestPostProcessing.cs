@@ -21,11 +21,20 @@ public class TestPostProcessing : MonoBehaviour
         postProcessVolume = FindObjectOfType<PostProcessVolume>();
     }
 
+    private void OnEnable()
+    {
+        health.OnHealthChanged += Health_OnHealthChanged;
+    }
+
+    private void OnDisable()
+    {
+        health.OnHealthChanged -= Health_OnHealthChanged;
+    }
+
     private void Start()
     {
         postProcessVolume.profile.TryGetSettings(out vignette);
         postProcessVolume.profile.TryGetSettings(out colorGrading);
-        health.OnHealthChanged += Health_OnHealthChanged;
     }
 
     private void Health_OnHealthChanged(float defuse, bool isDamaged)
@@ -45,6 +54,13 @@ public class TestPostProcessing : MonoBehaviour
             StartCoroutine(FadingCuro(vignette.intensity.value, colorGrading.saturation.value, 5f));
     }
 
+    /// <summary>
+    /// Медленное выключение виньетки
+    /// </summary>
+    /// <param name="vignetteValue">Значение виньетки</param>
+    /// <param name="saturationValue">Значение насыщенности</param>
+    /// <param name="time">Время выключения</param>
+    /// <returns></returns>
     private IEnumerator FadingCuro (float vignetteValue, float saturationValue, float time)
     {
         float k = 0f;

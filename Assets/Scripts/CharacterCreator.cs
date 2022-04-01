@@ -3,24 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[System.Serializable]
-public class CharacterMeshes
-{
-    public GameObject mesh;
-    public Avatar avatar;
-}
-
 public class CharacterCreator : MonoBehaviour
 {
     public static CharacterCreator instance = null;
 
-    [SerializeField] private GameObject MainCharacter;
+    [SerializeField] private GameObject Player;
     [SerializeField] private Cinemachine.CinemachineVirtualCamera camera;
 
+    [SerializeField] private GameObject weaponParent;
     [SerializeField] private GameObject[] weapons;
-    [SerializeField] private CharacterMeshes[] meshes;
-
-    private Animator animator;
 
     private void Awake()
     {
@@ -32,7 +23,7 @@ public class CharacterCreator : MonoBehaviour
         else
             Destroy(this.gameObject);
 
-        if (MainCharacter == null)
+        if (Player == null)
         {
             Debug.LogError("NO CHARACTER");
             return;
@@ -41,28 +32,20 @@ public class CharacterCreator : MonoBehaviour
 
     private void Start()
     {
-        int mesh = PlayerPrefs.GetInt("MESH");
-        int weapon = PlayerPrefs.GetInt("WEAPON");
-
-        SpawnCharacter(mesh, weapon);
+        if (PlayerPrefs.HasKey("WEAPON"))
+            SpawnCharacter(PlayerPrefs.GetInt("WEAPON"));
     }
 
-    public void SpawnCharacter (int meshDrop, int weaponDrop)
+    public void SpawnCharacter (int weaponDrop)
     {
-        Debug.Log("SPAWN");
-        int meshIndex = meshDrop;
         int weaponIndex = weaponDrop;
 
-        GameObject Player = Instantiate(MainCharacter);
         camera.Follow = Player.transform;
         camera.LookAt = Player.transform;
         
         Player.SetActive(false);
 
-        animator = Player.GetComponent<Animator>();
-        animator.avatar = meshes[meshIndex].avatar;
-        GameObject Mesh = Instantiate(meshes[meshIndex].mesh, Player.transform);
-        GameObject SpecialWeapon = Instantiate(weapons[weaponIndex], Player.transform);
+        GameObject SpecialWeapon = Instantiate(weapons[weaponIndex], weaponParent.transform);
 
         PlayerShoot playerShoot = Player.GetComponent<PlayerShoot>();
         playerShoot.SpecialWeapon = SpecialWeapon.GetComponent<Weapon>();

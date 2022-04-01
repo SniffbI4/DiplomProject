@@ -41,9 +41,12 @@ public class MortiraBullet : MonoBehaviour
 
     private void PlayExplosion ()
     {
+        CameraEffects.instance.ShakeCamera(4, 1);
+
         isMove = false;
         explosion.Play();
         audio.Play();
+
         Collider[] colliders = Physics.OverlapSphere(transform.position, damageRadius, layer);
         foreach (var hitcol in colliders)
         {

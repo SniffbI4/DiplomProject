@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+[RequireComponent (typeof(AudioSource))]
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private ParticleSystem bloodParticle;
     [SerializeField] private GameObject weaponModel;
 
+    [SerializeField] public string weaponName;
+
     [Header ("AMMO")]
     [SerializeField] int maxAmmoCount;
     [SerializeField] int maxAmmoInClip;
 
-    [SerializeField] int currentAmmo;
-    [SerializeField] int currentAmmoInClip;
+    public int currentAmmo { get; private set; }
+    public int currentAmmoInClip { get; private set; }
 
     [Header ("TIME")]
     [SerializeField] float timeToReload;
@@ -26,16 +29,10 @@ public class Weapon : MonoBehaviour
     [SerializeField] private UnityEvent OnShot;
 
     #region Делегаты и события
-    public delegate void WeaponChanged();
-    public delegate void WeaponReloaded(float timeToReload);
-    public delegate void WeaponAmmoChanged(int currentAmmoInClip, int currentAmmo);
-
-    public static event WeaponAmmoChanged OnWeaponFire;
-    public static event WeaponReloaded OnWeaponReloadStart;
-    public static event WeaponAmmoChanged OnWeaponReloadEnd;
-    public static event WeaponAmmoChanged OnWeaponActivated;
-    public static event WeaponChanged OnWeaponDeactivated;
-    public static event WeaponAmmoChanged OnWeaponAmmoChanged;
+    public delegate void WeaponInfoChange(Weapon w);
+    public static WeaponInfoChange WeaponInfoChanged;
+    public static WeaponInfoChange WeaponReloadStart;
+    public static WeaponInfoChange WeaponReloadStop;
     #endregion
 
     private AudioSource audio;
@@ -45,6 +42,8 @@ public class Weapon : MonoBehaviour
     private void Start()
     {
         audio = GetComponent<AudioSource>();
+        currentAmmoInClip = maxAmmoInClip;
+        currentAmmo = maxAmmoInClip * 3;
     }
 
     protected void CheckAmmo ()
@@ -63,20 +62,15 @@ public class Weapon : MonoBehaviour
 
     public void Fire ()
     {
-        if (isReadyToShoot)
+        if (isReadyToShoot && currentAmmoInClip > 0)
         {
-            if (currentAmmoInClip > 0)
-            {
-                isReadyToShoot = false;
-                currentAmmoInClip--;
+            isReadyToShoot = false;
+            currentAmmoInClip--;
 
-                //OnWeaponFire(currentAmmoInClip, currentAmmo);
-                if (OnWeaponAmmoChanged!=null)
-                    OnWeaponAmmoChanged(currentAmmoInClip, currentAmmo);
+            WeaponInfoChanged?.Invoke(this);
 
-                Shot();
-                StartCoroutine(ShotCuro(timeBetweenShots));
-            }
+            Shot();
+            StartCoroutine(ShotCuro(timeBetweenShots));
         }
     }
 
@@ -91,11 +85,9 @@ public class Weapon : MonoBehaviour
         if (currentAmmoInClip == maxAmmoInClip || isOnReload)
             return;
 
-        if (OnWeaponReloadStart!=null)
-            OnWeaponReloadStart(timeToReload);
-
         isOnReload = true;
         StopAllCoroutines();
+        WeaponReloadStart(this);
         isReadyToShoot = false;
         audio.PlayOneShot(audioReload);
         StartCoroutine(ReloadCuro(timeToReload));
@@ -123,9 +115,7 @@ public class Weapon : MonoBehaviour
         isReadyToShoot = true;
         isOnReload = false;
 
-        //OnWeaponReloadEnd(currentAmmoInClip, currentAmmo);
-        if (OnWeaponAmmoChanged!=null)
-            OnWeaponAmmoChanged(currentAmmoInClip, currentAmmo);
+        WeaponInfoChanged?.Invoke(this);
     }
 
     protected void ShowBlood (Vector3 position)
@@ -144,18 +134,15 @@ public class Weapon : MonoBehaviour
 
         weaponModel.SetActive(true);
 
-        if (OnWeaponActivated != null)
-            OnWeaponActivated(currentAmmoInClip, currentAmmo);
+        WeaponInfoChanged?.Invoke(this);
     }
 
     public void PutAwayWeapon ()
     {
         StopAllCoroutines();
+        WeaponReloadStop(this);
         audio.Stop();
         weaponModel.SetActive(false);
-
-        if (OnWeaponDeactivated!=null)
-            OnWeaponDeactivated();
     }
 
     public void AddAmmo ()
@@ -164,7 +151,6 @@ public class Weapon : MonoBehaviour
         if (currentAmmo > maxAmmoCount)
             currentAmmo = maxAmmoCount;
 
-        if (OnWeaponAmmoChanged!=null)
-            OnWeaponAmmoChanged(currentAmmoInClip, currentAmmo);
+        WeaponInfoChanged?.Invoke(this);
     }
 }

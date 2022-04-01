@@ -5,16 +5,22 @@ public class SniperRifle : Weapon
     [Header("SniperRifleSettings")]
     [SerializeField] int damagePerShot;
     [SerializeField] int damageAbatement;
+    [SerializeField] float bulletRadius;
 
     private int damage;
 
     public override void Shot()
     {
         base.Shot();
+
+        Debug.Log("ONE SHOT");
+        CameraEffects.instance.ShakeCamera(3, 0.1f);
+
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit[] hits;
 
-        hits = Physics.RaycastAll(ray, 50);
+        //hits = Physics.RaycastAll(ray, 50);
+        hits = Physics.SphereCastAll(ray, bulletRadius, 100);
 
         damage = damagePerShot;
 
@@ -35,10 +41,6 @@ public class SniperRifle : Weapon
 
     private void Update()
     {
-        base.CheckAmmo();
-
-        //Vector3 direction = transform.forward * 50;
-        //Debug.DrawRay(transform.position, direction, Color.red);
+        CheckAmmo();
     }
-
 }

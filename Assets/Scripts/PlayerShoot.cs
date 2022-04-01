@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerShoot : MonoBehaviour
 {
     [SerializeField] private Weapon mainWeapon=default;
-    [SerializeField] private Weapon specialWeapon=default;
+    private Weapon specialWeapon=default;
 
     public Weapon SpecialWeapon {
         get
@@ -23,9 +23,13 @@ public class PlayerShoot : MonoBehaviour
 
     private void Start()
     {
-
         currentWeapon = mainWeapon;
         currentWeapon.TakeWeapon();
+        
+        // TO DO
+        // TakeWeapon вызывается 
+        // перед стартом классов Weapon
+        // поэтому в старте в UI отображается 0/0 патрон
     }
 
     public void ChangeWeapon ()

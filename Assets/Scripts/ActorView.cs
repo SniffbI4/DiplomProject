@@ -8,7 +8,8 @@ public class ActorView : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        Weapon.OnWeaponReloadStart += Weapon_OnWeaponReloadStart;
+        Weapon.WeaponReloadStart = PlayReloadStart;
+        Weapon.WeaponReloadStop = PlayReloadStop;
     }
 
     private void Weapon_OnWeaponReloadStart(float time)
@@ -76,12 +77,13 @@ public class ActorView : MonoBehaviour
         animator.SetBool("WalkBool", false);
     }
 
-    //public void PlayReloadStart ()
-    //{
-    //    animator.SetTrigger(GameData.ANIMATION_RELOAD_TRIGGER);
-    //}
-
-    public void PlayReloadStop ()
+    public void PlayReloadStart(Weapon w)
     {
+        animator.SetTrigger(GameData.ANIMATION_RELOAD_TRIGGER);
+    }
+
+    public void PlayReloadStop (Weapon w)
+    {
+        Debug.Log("Stop reloading");
     }
 }

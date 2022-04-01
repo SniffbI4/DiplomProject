@@ -24,6 +24,6 @@ public class Mortira : Weapon
 
     private void Update()
     {
-        base.CheckAmmo();
+        CheckAmmo();
     }
 }

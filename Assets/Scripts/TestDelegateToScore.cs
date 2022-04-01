@@ -31,6 +31,9 @@ public class TestDelegateToScore : MonoBehaviour
         agent.isStopped = true;
         collider.enabled = false;
         ResourseSpawner.instance.SpawnResourse(transform.position);
-        UIManager.instance.AddScore(score);
+
+        // TO DO
+        //–азобратьс€, как сделать добавление к SCORE при смерти
+        //UIManager.instance.AddScore(score);
     }
 }

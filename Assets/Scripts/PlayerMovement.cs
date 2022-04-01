@@ -4,6 +4,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float speed;
+    [SerializeField] Transform weaponDirection;
+    [SerializeField] float angleOffset;
 
     private ActorView actorView;
     private CharacterController characterController;
@@ -12,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 lookDirection;
     private bool canMove = true;
     private bool isRolling = false;
+
+    private Vector3 weaponAim;
 
     private void Start()
     {
@@ -45,12 +49,13 @@ public class PlayerMovement : MonoBehaviour
         {
             animDirection = (hit.point - transform.position).normalized;
             lookDirection = new Vector3(hit.point.x, transform.position.y, hit.point.z);
+
             transform.LookAt(lookDirection, Vector3.up);
+            transform.Rotate(0, angleOffset, 0);
         }
         #endregion
 
         #region AnimatorCalculations
-
         Vector3 dirToCurcor = lookDirection - transform.position;
         Vector3 allignedDir = new Vector3(dirToCurcor.x, 0, dirToCurcor.z);
 
@@ -68,6 +73,42 @@ public class PlayerMovement : MonoBehaviour
         float Ay = cos * y + sin * x;
 
         actorView.PlayWalk(Ax, Ay);
+        #endregion
+
+        #region Test
+        ////float distOM = Vector3.Distance(transform.position, lookDirection);
+        ////Vector3 weaponPosOnPlane = weaponDirection.position;
+        ////weaponPosOnPlane.y = transform.position.y;
+        ////float distOW = Vector3.Distance(transform.position, weaponPosOnPlane);
+
+        //////float distWA = Mathf.Sqrt((Mathf.Pow(distOM,2))-(Mathf.Pow(distOW, 2)));
+        ////float angleBetweenWeaponAndCharacter = Vector3.SignedAngle(transform.forward - transform.position, weaponDirection.forward - weaponDirection.position, Vector3.up);
+        ////Debug.Log(angleBetweenWeaponAndCharacter);
+        ////float distOO1 = distOW * Mathf.Sin(angleBetweenWeaponAndCharacter * Mathf.Deg2Rad);
+
+        ////float distWO1 = Mathf.Sqrt((Mathf.Pow(distOW, 2)) - (Mathf.Pow(distOO1, 2)));
+        ////float distAO1 = Mathf.Sqrt((Mathf.Pow(distOM, 2)) - (Mathf.Pow(distOO1, 2)));
+
+        ////float distAW = distWO1 + distAO1;
+        
+        ////weaponAim = weaponPosOnPlane + weaponDirection.forward * distAW;
+        ////weaponAim.y = transform.position.y;
+
+        ////Debug.DrawLine(transform.position, lookDirection, Color.red);
+        ////Debug.DrawLine(weaponPosOnPlane, weaponAim, Color.black);
+        ////Debug.DrawRay(transform.position, transform.forward * distAW, Color.blue);
+
+        ////float ang = Vector3.SignedAngle(lookDirection - transform.position, weaponAim-transform.position, Vector3.up);
+
+        //////Debug.Log($"weapAimPos = {weaponAim}" +
+        //////    $"\nmousePos = {lookDirection}");
+        //////Debug.Log($"angle(Vector3) = {ang}" +
+        //////    $"\nnewAngle = {newAng}");
+
+        //////transform.LookAt(weaponAim);
+        //////transform.Rotate(0, newAng, 0);
+        //////transform.LookAt(weaponAim, transform.up);
+
         #endregion
     }
 
@@ -87,5 +128,13 @@ public class PlayerMovement : MonoBehaviour
     {
         canMove = true;
         isRolling = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(lookDirection, 0.2f);
+        Gizmos.color = Color.black;
+        Gizmos.DrawSphere(weaponAim, 0.1f);
     }
 }

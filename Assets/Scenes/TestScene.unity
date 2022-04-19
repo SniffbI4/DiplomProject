@@ -472,7 +472,7 @@ GameObject:
   - component: {fileID: 149420953}
   - component: {fileID: 149420952}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: SceneTransitionCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -563,8 +563,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1723291461}
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_Father: {fileID: 1852613053}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1630,11 +1630,11 @@ MonoBehaviour:
     m_Options:
     - m_Text: "\u0421\u043D\u0430\u0439\u043F\u0435\u0440\u0441\u043A\u0430\u044F
         \u0432\u0438\u043D\u0442\u043E\u0432\u043A\u0430"
-      m_Image: {fileID: 0}
+      m_Image: {fileID: 21300000, guid: 8b830f2551d81d741940c647c3c64cdb, type: 3}
     - m_Text: "\u041F\u0443\u043B\u0435\u043C\u0435\u0442"
-      m_Image: {fileID: 0}
+      m_Image: {fileID: 21300000, guid: a5875c421a8ef4a459aa3418d8b46254, type: 3}
     - m_Text: "\u0413\u0440\u0430\u043D\u0430\u0442\u043E\u043C\u0435\u0442"
-      m_Image: {fileID: 0}
+      m_Image: {fileID: 21300000, guid: 1257399da6600f0449e716d1433ec809, type: 3}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2104,7 +2104,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &414445932
 Transform:
   m_ObjectHideFlags: 0
@@ -2122,7 +2122,7 @@ Transform:
   - {fileID: 1517614904}
   - {fileID: 893591898}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &417792889
 GameObject:
@@ -13481,7 +13481,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 734448870}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 210f2a9fb74deaa458bbf3d763292aab, type: 3}
   m_Name: 
@@ -13776,7 +13776,7 @@ Transform:
   m_LocalScale: {x: 6.0725, y: 6.0725, z: 6.0725}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!4 &861428628 stripped
 Transform:
@@ -22297,9 +22297,9 @@ MonoBehaviour:
   camera: {fileID: 2117215298}
   weaponParent: {fileID: 662200267}
   weapons:
-  - {fileID: 6216588408498745610, guid: 033cbd3f1e2a88c4c9896074cc5e4fa8, type: 3}
-  - {fileID: 2303109149883278804, guid: 93a56ef7338237b4baa296cb19fcc466, type: 3}
-  - {fileID: 6216588408498745610, guid: 87d2a81092079fe4cbe76658a8485268, type: 3}
+  - {fileID: 2303109149883278795, guid: 93a56ef7338237b4baa296cb19fcc466, type: 3}
+  - {fileID: 5160175040466537863, guid: 87d2a81092079fe4cbe76658a8485268, type: 3}
+  - {fileID: 6216588408498745655, guid: 033cbd3f1e2a88c4c9896074cc5e4fa8, type: 3}
 --- !u!4 &1282294754 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7289998643497998662, guid: a70b9db4c9ca9454483179f178e4aeee, type: 3}
@@ -62716,7 +62716,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1830056049
 RectTransform:
   m_ObjectHideFlags: 0
@@ -62903,6 +62903,7 @@ Transform:
   m_Children:
   - {fileID: 2088655356}
   - {fileID: 1830056049}
+  - {fileID: 149420956}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -76715,7 +76716,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2088655356
 RectTransform:
   m_ObjectHideFlags: 0
@@ -76809,7 +76810,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8978a92d4be43b54d929d8e066b4aa98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon: {fileID: 352349384}
+  advWeaponName: {fileID: 0}
 --- !u!4 &2113266130 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7861350953103440092, guid: efe06c0608269fb45a852b9c1aff7526, type: 3}

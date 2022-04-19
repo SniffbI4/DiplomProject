@@ -154,13 +154,13 @@ public class EnemySpawner : MonoBehaviour
         return playerTransform;
     }
 
-    private void OnDrawGizmos()
-    {
-        Color color = Color.yellow;
-        color.a = 0.1f;
-        Gizmos.color = color;
-        Gizmos.DrawSphere(playerTransform.position, minRadius);
-        Gizmos.color = color;
-        Gizmos.DrawSphere(playerTransform.position, maxRadius);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Color color = Color.yellow;
+    //    color.a = 0.1f;
+    //    Gizmos.color = color;
+    //    Gizmos.DrawSphere(playerTransform.position, minRadius);
+    //    Gizmos.color = color;
+    //    Gizmos.DrawSphere(playerTransform.position, maxRadius);
+    //}
 }

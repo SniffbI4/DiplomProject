@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
-    [SerializeField] private Dropdown weapon;
+    [SerializeField] private Text advWeaponName;
+    //[SerializeField] private Dropdown weapon;
 
     private void Awake()
     {
@@ -14,7 +15,8 @@ public class SceneController : MonoBehaviour
     }
     public void NewGame()
     {
-        PlayerPrefs.SetInt("WEAPON", weapon.value);
+        PlayerPrefs.SetString("WEAPON", advWeaponName.text);
+        //PlayerPrefs.SetInt("WEAPON", weapon.value);
         Time.timeScale = 1;
     }
 }

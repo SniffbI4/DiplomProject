@@ -11,7 +11,7 @@ public class CharacterCreator : MonoBehaviour
     [SerializeField] private Cinemachine.CinemachineVirtualCamera camera;
 
     [SerializeField] private GameObject weaponParent;
-    [SerializeField] private GameObject[] weapons;
+    [SerializeField] private Weapon[] weapons;
 
     private void Awake()
     {
@@ -28,26 +28,33 @@ public class CharacterCreator : MonoBehaviour
             Debug.LogError("NO CHARACTER");
             return;
         }
-    }
 
-    private void Start()
-    {
         if (PlayerPrefs.HasKey("WEAPON"))
         {
-            SpawnCharacter(PlayerPrefs.GetInt("WEAPON"));
+            SpawnCharacter(PlayerPrefs.GetString("WEAPON"));
         }
     }
 
-    public void SpawnCharacter (int weaponDrop)
+    public void SpawnCharacter (string weaponName)
     {
-        int weaponIndex = weaponDrop;
+        Debug.Log($"Weapon name in reg: {weaponName}");
+        int weaponIndex=0;
+        for (int i=0; i<weapons.Length; i++)
+        {
+            Debug.Log($"{weapons[i].weaponName}");
+            if (weapons[i].weaponName == weaponName)
+            {
+                weaponIndex = i;
+                break;
+            }
+        }
 
         camera.Follow = Player.transform;
         camera.LookAt = Player.transform;
         
         Player.SetActive(false);
 
-        GameObject SpecialWeapon = Instantiate(weapons[weaponIndex], weaponParent.transform);
+        GameObject SpecialWeapon = Instantiate(weapons[weaponIndex].gameObject, weaponParent.transform);
 
         PlayerShoot playerShoot = Player.GetComponent<PlayerShoot>();
         playerShoot.SpecialWeapon = SpecialWeapon.GetComponent<Weapon>();

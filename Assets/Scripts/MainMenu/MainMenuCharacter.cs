@@ -5,7 +5,6 @@ using UnityEngine;
 [RequireComponent (typeof(Animator))]
 public class MainMenuCharacter : MonoBehaviour
 {
-    private Transform weaponParent;
     private Animator animator;
 
     private bool isAiming;
@@ -20,15 +19,9 @@ public class MainMenuCharacter : MonoBehaviour
 
     public void ChangeAimState ()
     {
-        Debug.Log("HELLO");
         isAiming = !isAiming;
         animatorMaskWeight = isAiming ? 1 : 0;
         animationDeltaTime = isAiming ? Time.deltaTime*10 : Time.deltaTime*3;
-    }
-
-    public void ChangeWeapon (Weapon w)
-    {
-
     }
 
     private void Update()

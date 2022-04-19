@@ -8,8 +8,8 @@ public class ActorView : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        Weapon.WeaponReloadStart = PlayReloadStart;
-        Weapon.WeaponReloadStop = PlayReloadStop;
+        Weapon.WeaponReloadStart += PlayReloadStart;
+        Weapon.WeaponReloadStop += PlayReloadStop;
     }
 
     private void Weapon_OnWeaponReloadStart(float time)
@@ -84,6 +84,6 @@ public class ActorView : MonoBehaviour
 
     public void PlayReloadStop (Weapon w)
     {
-        Debug.Log("Stop reloading");
+        //Debug.Log("Stop reloading");
     }
 }

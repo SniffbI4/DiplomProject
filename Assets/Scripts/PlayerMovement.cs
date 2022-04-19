@@ -10,7 +10,6 @@ public class PlayerMovement : MonoBehaviour
     private ActorView actorView;
     private CharacterController characterController;
 
-    private Vector3 animDirection;
     private Vector3 lookDirection;
     private bool canMove = true;
     private bool isRolling = false;
@@ -29,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="x">Input горизонтальной оси</param>
     /// <param name="y">Input вертикальной оси</param>
     /// <param name="lookAt">Input.mousePosition</param>
-    public void Move(float x, float y, Vector3 lookAt)
+    public void Move(float x, float y, Vector2 lookAt)
     {
         if (!canMove)
             return;
@@ -42,17 +41,10 @@ public class PlayerMovement : MonoBehaviour
         #endregion
 
         #region Rotation
-        Ray ray = Camera.main.ScreenPointToRay(lookAt);
-        RaycastHit hit;
+        lookDirection = new Vector3(lookAt.x, transform.position.y, lookAt.y);
 
-        if (Physics.Raycast(ray, out hit, 100))
-        {
-            animDirection = (hit.point - transform.position).normalized;
-            lookDirection = new Vector3(hit.point.x, transform.position.y, hit.point.z);
-
-            transform.LookAt(lookDirection, Vector3.up);
-            transform.Rotate(0, angleOffset, 0);
-        }
+        transform.LookAt(lookDirection, Vector3.up);
+        transform.Rotate(0, angleOffset, 0);
         #endregion
 
         #region AnimatorCalculations

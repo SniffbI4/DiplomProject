@@ -25,13 +25,12 @@ public class Health : MonoBehaviour
 
     public void Refresh ()
     {
-        if (!healthUI.gameObject.activeSelf)
+        if (healthUI!=null && !healthUI.gameObject.activeSelf)
             healthUI.gameObject.SetActive(true);
         currentHealth = maxHeatlh;
         IsAlive = true;
 
-        if (OnHealthChanged != null)
-            OnHealthChanged((float)currentHealth / (float)maxHeatlh);
+        OnHealthChanged?.Invoke((float)currentHealth / (float)maxHeatlh);
     }
 
     public void ApplyDamage (int damage)
@@ -44,8 +43,7 @@ public class Health : MonoBehaviour
                 IsAlive = false;
                 Dead();
             }
-            if (OnHealthChanged != null)
-                OnHealthChanged((float)currentHealth / (float)maxHeatlh, true);
+            OnHealthChanged?.Invoke((float)currentHealth / (float)maxHeatlh, true);
         }
     }
 
@@ -55,16 +53,21 @@ public class Health : MonoBehaviour
         if (currentHealth > maxHeatlh)
             currentHealth = maxHeatlh;
 
-        if (OnHealthChanged != null)
-            OnHealthChanged((float)currentHealth / (float)maxHeatlh);
+        OnHealthChanged?.Invoke((float)currentHealth / (float)maxHeatlh);
     }
 
     private void Dead ()
     {
-        healthUI.gameObject.SetActive(false);
-        //OnDead.Invoke();
+        if (healthUI!=null)
+            healthUI.gameObject.SetActive(false);
+        OnDead.Invoke();
 
         if (OnEnemyDead!=null)
             OnEnemyDead();
+    }
+
+    public int GetHealth()
+    {
+        return currentHealth;
     }
 }

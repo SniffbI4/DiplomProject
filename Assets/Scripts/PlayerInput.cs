@@ -16,11 +16,20 @@ public class PlayerInput : MonoBehaviour
     }
 
     private void Update()
-    {
+    {        
+        //Направление прицела
+        Vector3 mousePosition = Input.mousePosition;
+
+        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+        RaycastHit hit;
+
+        Physics.Raycast(ray, out hit, 100);
+        Vector2 target = new Vector2(hit.point.x, hit.point.z);
+
         //Стрельба
         if (Input.GetMouseButton(0))
         {
-            playerShoot.Fire();
+            playerShoot.Fire(target);
         }
 
         //Перезарядка
@@ -38,11 +47,8 @@ public class PlayerInput : MonoBehaviour
         float x = Input.GetAxis(GameData.HORIZONTAL_AXIS);
         float y = Input.GetAxis(GameData.VERTICAL_AXIS);
 
-        //Направление прицела
-        Vector3 mousePosition = Input.mousePosition;
-
         //Перемещение
-        playerMovement.Move(x, y, mousePosition);
+        playerMovement.Move(x, y, target);
 
         //Перекат
         if (Input.GetKeyDown(KeyCode.Space))

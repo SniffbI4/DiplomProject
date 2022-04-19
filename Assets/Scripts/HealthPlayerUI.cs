@@ -1,12 +1,13 @@
 using UnityEngine;
+using UnityEngine.UI;
 using RengeGames.HealthBars;
 
 public class HealthPlayerUI : HealthUI
 {
-    [SerializeField] private UltimateCircularHealthBar ultimateCircular;
+    [SerializeField] private Image progressBar;
 
     public override void ShowUI (float health)
     {
-        ultimateCircular.SetRemovedSegments((1f-health) * ultimateCircular.SegmentCount);
+        progressBar.fillAmount = health;
     }
 }

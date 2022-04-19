@@ -33,7 +33,9 @@ public class CharacterCreator : MonoBehaviour
     private void Start()
     {
         if (PlayerPrefs.HasKey("WEAPON"))
+        {
             SpawnCharacter(PlayerPrefs.GetInt("WEAPON"));
+        }
     }
 
     public void SpawnCharacter (int weaponDrop)

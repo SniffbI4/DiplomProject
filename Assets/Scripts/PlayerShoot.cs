@@ -46,9 +46,9 @@ public class PlayerShoot : MonoBehaviour
         currentWeapon.TakeWeapon();
     }
 
-    public void Fire ()
+    public void Fire (Vector3 aimPosition)
     { 
-        currentWeapon.Fire();
+        currentWeapon.Fire(aimPosition);
     }
 
     public void ReloadWeapon ()

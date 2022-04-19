@@ -2,14 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthUI : MonoBehaviour
+public abstract class HealthUI : MonoBehaviour
 {
+    [SerializeField]
     private Health health;
 
     private void Awake()
     {
-        health = transform.parent.gameObject.GetComponent<Health>();
+        if (health == null)
+        {
+            health = transform.parent.gameObject.GetComponent<Health>();
+        }
+    }
+
+    private void OnEnable()
+    {
         health.OnHealthChanged += Health_OnHealthChanged;
+    }
+
+    private void OnDisable()
+    {
+        health.OnHealthChanged -= Health_OnHealthChanged;
     }
 
     private void Health_OnHealthChanged(float defuse, bool isDamaged)
@@ -17,8 +30,5 @@ public class HealthUI : MonoBehaviour
         ShowUI(defuse);
     }
 
-    public virtual void ShowUI(float health)
-    {
-        //функционал в дочерних классах
-    }
+    public abstract void ShowUI(float health);
 }

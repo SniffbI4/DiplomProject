@@ -6,27 +6,25 @@ public class AutoRifle : Weapon
     [SerializeField] int damagePerShot;
     [SerializeField] float bulletRadius;
 
-    public override void Shot()
+    protected override void Shot(Vector3 target)
     {
-        base.Shot();
-
         CameraEffects.instance.ShakeCamera(0.5f, 0.1f);
 
-        Ray ray = new Ray(transform.position, transform.forward);
-        RaycastHit hit;
+        Ray weaponRay = new Ray(transform.position, target-transform.position);
 
-        if (Physics.SphereCast(ray, bulletRadius, out hit, 50))
+        RaycastHit weaponHit;
+
+        if (Physics.SphereCast(weaponRay, bulletRadius, out weaponHit, float.MaxValue))
         {
-            Debug.Log($"hit {hit.collider.name}");
-            if (hit.collider.CompareTag("Enemy"))
+            if (weaponHit.collider.CompareTag("Enemy"))
             {
-                ShowBlood(hit.point);
-                hit.collider.GetComponent<Health>().ApplyDamage(damagePerShot);
+                ShowBlood(weaponHit.point);
+                weaponHit.collider.GetComponent<Health>().ApplyDamage(damagePerShot);
             }
 
-            if (hit.collider.CompareTag("Transformer"))
+            if (weaponHit.collider.CompareTag("Transformer"))
             {
-                hit.collider.GetComponent<Transformer>().Break();
+                weaponHit.collider.GetComponent<Transformer>().Break();
             }
         }
     }

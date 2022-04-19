@@ -9,17 +9,13 @@ public class SniperRifle : Weapon
 
     private int damage;
 
-    public override void Shot()
+    protected override void Shot(Vector3 target)
     {
-        base.Shot();
-
-        Debug.Log("ONE SHOT");
         CameraEffects.instance.ShakeCamera(3, 0.1f);
 
-        Ray ray = new Ray(transform.position, transform.forward);
+        Ray ray = new Ray(transform.position, target-transform.position);
         RaycastHit[] hits;
 
-        //hits = Physics.RaycastAll(ray, 50);
         hits = Physics.SphereCastAll(ray, bulletRadius, 100);
 
         damage = damagePerShot;

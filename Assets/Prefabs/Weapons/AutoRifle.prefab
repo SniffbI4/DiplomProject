@@ -5006,6 +5006,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54593f61fe4cbb64a9f3e8be97244a84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ammoTracersParticle: {fileID: 1794505704928374389}
   bloodParticle: {fileID: 58616918356237663}
   weaponModel: {fileID: 1793739978290040416}
   weaponName: "\u0410\u0432\u0442\u043E\u043C\u0430\u0442"
@@ -5015,6 +5016,7 @@ MonoBehaviour:
   timeBetweenShots: 0.1
   audioShot: {fileID: 8300000, guid: 24eaa33eda653634dafbba00d81d8cb0, type: 3}
   audioReload: {fileID: 8300000, guid: 19fc7b1e994da4d4d849a586f14657e6, type: 3}
+  weaponUiSprite: {fileID: 21300000, guid: eb19be33c50d75c469cd0f89ac7d2ad4, type: 3}
   OnShot:
     m_PersistentCalls:
       m_Calls:
@@ -5031,7 +5033,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   damagePerShot: 15
-  bulletRadius: 0.2
+  bulletRadius: 0.1
 --- !u!82 &1794505705524153789
 AudioSource:
   m_ObjectHideFlags: 0

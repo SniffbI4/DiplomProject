@@ -10205,6 +10205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fe31e6b5dabeb449b4253947b20dda5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ammoTracersParticle: {fileID: 6216588408011235039}
   bloodParticle: {fileID: 2432834164991797523}
   weaponModel: {fileID: 3835886254592134836}
   weaponName: "\u0421\u043D\u0430\u0439\u043F\u0435\u0440\u043A\u0430"
@@ -10214,6 +10215,7 @@ MonoBehaviour:
   timeBetweenShots: 1
   audioShot: {fileID: 8300000, guid: 24eaa33eda653634dafbba00d81d8cb0, type: 3}
   audioReload: {fileID: 8300000, guid: 19fc7b1e994da4d4d849a586f14657e6, type: 3}
+  weaponUiSprite: {fileID: 21300000, guid: 8b830f2551d81d741940c647c3c64cdb, type: 3}
   OnShot:
     m_PersistentCalls:
       m_Calls:

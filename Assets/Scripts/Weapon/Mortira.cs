@@ -8,10 +8,8 @@ public class Mortira : Weapon
 
     private Vector3 explosionPosition;
 
-    public override void Shot()
+    protected override void Shot(Vector3 aimPosition)
     {
-        base.Shot();
-
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {

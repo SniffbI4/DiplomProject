@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,10 @@ using UnityEngine.AI;
 
 public class TestDelegateToScore : MonoBehaviour
 {
+    public static Action<TestDelegateToScore> ScoreChanged;
+    
     [SerializeField] int score;
+    public int Score => score;
 
     private Health health;
     private ActorView animator;
@@ -20,9 +24,14 @@ public class TestDelegateToScore : MonoBehaviour
         collider = GetComponent<Collider>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         health.OnEnemyDead += Health_OnEnemyDead;
+    }
+
+    private void OnDisable()
+    {
+        health.OnEnemyDead -= Health_OnEnemyDead;
     }
 
     private void Health_OnEnemyDead()
@@ -32,8 +41,6 @@ public class TestDelegateToScore : MonoBehaviour
         collider.enabled = false;
         ResourseSpawner.instance.SpawnResourse(transform.position);
 
-        // TO DO
-        //–азобратьс€, как сделать добавление к SCORE при смерти
-        //UIManager.instance.AddScore(score);
+        ScoreChanged?.Invoke(this);
     }
 }

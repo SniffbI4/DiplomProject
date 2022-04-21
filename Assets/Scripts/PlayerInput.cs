@@ -1,12 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof (PlayerMovement), typeof(PlayerShoot))]
 public class PlayerInput : MonoBehaviour
 {
-    PlayerMovement playerMovement;
-    PlayerShoot playerShoot;
+    [SerializeField] private UnityEvent testAction;
+
+    private PlayerMovement playerMovement;
+    private PlayerShoot playerShoot;
 
     private void Awake()
     {
@@ -15,11 +16,20 @@ public class PlayerInput : MonoBehaviour
     }
 
     private void Update()
-    {
+    {        
+        //Направление прицела
+        Vector3 mousePosition = Input.mousePosition;
+
+        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+        RaycastHit hit;
+
+        Physics.Raycast(ray, out hit, 100);
+        Vector2 target = new Vector2(hit.point.x, hit.point.z);
+
         //Стрельба
         if (Input.GetMouseButton(0))
         {
-            playerShoot.Fire();
+            playerShoot.Fire(target);
         }
 
         //Перезарядка
@@ -33,18 +43,18 @@ public class PlayerInput : MonoBehaviour
         if (mouseWheel >= 0.1f || mouseWheel <= -0.1f)
             playerShoot.ChangeWeapon();
 
-        //Перемещение персонажа
+        //Направление перемещения персонажа
         float x = Input.GetAxis(GameData.HORIZONTAL_AXIS);
         float y = Input.GetAxis(GameData.VERTICAL_AXIS);
 
-        //Направление прицела
-        Vector3 mousePosition = Input.mousePosition;
-        playerMovement.Move(x, y, mousePosition);
+        //Перемещение
+        playerMovement.Move(x, y, target);
 
-        //Проверка (тесты)
+        //Перекат
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            EnemySpawner.instance.SpawnEnemy();
+            playerMovement.Roll(x, y);
         }
+
     }
 }

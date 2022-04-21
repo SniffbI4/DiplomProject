@@ -1,34 +1,53 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Weapon : MonoBehaviour
+[RequireComponent (typeof(AudioSource))]
+public abstract class Weapon : MonoBehaviour
 {
+    [SerializeField] private ParticleSystem ammoTracersParticle;
+    [SerializeField] private ParticleSystem bloodParticle;
+    [SerializeField] private GameObject weaponModel;
+
+    [SerializeField] public string weaponName;
+
     [Header ("AMMO")]
     [SerializeField] int maxAmmoCount;
-    [SerializeField] int maxAmmoInClip;
+    [SerializeField] public int maxAmmoInClip;
 
-    [SerializeField] int currentAmmo;
-    [SerializeField] int currentAmmoInClip;
+    public int currentAmmo { get; private set; }
+    public int currentAmmoInClip { get; private set; }
 
     [Header ("TIME")]
-    [SerializeField] float timeToReload;
+    [SerializeField] public float timeToReload;
     [SerializeField] float timeBetweenShots;
 
     [Header ("SOUNDS")]
     [SerializeField] private AudioClip audioShot;
     [SerializeField] private AudioClip audioReload;
 
+    [Header("UI")]
+    public Sprite weaponUiSprite;
+
     [SerializeField] private UnityEvent OnShot;
 
     private AudioSource audio;
     private bool isReadyToShoot = false;
-    private bool isOnReload;
+    public bool IsOnReload { get; private set; }
+
+    public static Action<Weapon> WeaponInfoChanged;
+    public static Action<Weapon> WeaponReloadStart;
+    public static Action<Weapon> WeaponReloadStop;
+
+    protected abstract void Shot(Vector3 target);
 
     private void Start()
     {
         audio = GetComponent<AudioSource>();
+        currentAmmoInClip = maxAmmoInClip;
+        currentAmmo = maxAmmoInClip * 3;
     }
 
     protected void CheckAmmo ()
@@ -45,35 +64,36 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public void Fire ()
+    public void Fire (Vector2 aimPosition)
     {
-        if (isReadyToShoot)
+        Vector3 target = new Vector3(aimPosition.x, transform.position.y/2, aimPosition.y);
+
+        if (ammoTracersParticle) 
+            ammoTracersParticle.transform.LookAt(target, Vector3.up);
+
+        if (isReadyToShoot && currentAmmoInClip > 0)
         {
-            if (currentAmmoInClip > 0)
-            {
-                isReadyToShoot = false;
-                currentAmmoInClip--;
-                UpdateAmmoUI();
+            isReadyToShoot = false;
+            currentAmmoInClip--;
 
-                Shot();
-                StartCoroutine(ShotCuro(timeBetweenShots));
-            }
+            WeaponInfoChanged?.Invoke(this);
+
+            audio.PlayOneShot(audioShot);
+            OnShot.Invoke();
+
+            Shot(target);
+            StartCoroutine(ShotCuro(timeBetweenShots));
         }
-    }
-
-    public virtual void Shot()
-    {
-        audio.PlayOneShot(audioShot);
-        OnShot.Invoke();
     }
 
     public void Reload ()
     {
-        if (currentAmmoInClip == maxAmmoInClip || isOnReload)
+        if (currentAmmoInClip == maxAmmoInClip || IsOnReload)
             return;
-        UIManager.instance.ReloadAnim(timeToReload);
-        isOnReload = true;
+
+        IsOnReload = true;
         StopAllCoroutines();
+        WeaponReloadStart?.Invoke(this);
         isReadyToShoot = false;
         audio.PlayOneShot(audioReload);
         StartCoroutine(ReloadCuro(timeToReload));
@@ -99,8 +119,14 @@ public class Weapon : MonoBehaviour
             currentAmmo = 0;
         }
         isReadyToShoot = true;
-        isOnReload = false;
-        UpdateAmmoUI();
+        IsOnReload = false;
+        WeaponReloadStop?.Invoke(this);
+    }
+
+    protected void ShowBlood (Vector3 position)
+    {
+        bloodParticle.transform.position = position;
+        bloodParticle.Play();
     }
 
     public void TakeWeapon ()
@@ -108,22 +134,20 @@ public class Weapon : MonoBehaviour
         if (currentAmmo > 0)
         {
             isReadyToShoot = true;
-            isOnReload = false;
+            IsOnReload = false;
         }
 
-        UpdateAmmoUI();
+        weaponModel.SetActive(true);
+
+        WeaponInfoChanged?.Invoke(this);
     }
 
     public void PutAwayWeapon ()
     {
         StopAllCoroutines();
-        UIManager.instance.StopAnimation();
-        audio.Stop();   
-    }
-
-    public void UpdateAmmoUI ()
-    {
-        UIManager.instance.ShowAmmo(currentAmmoInClip, currentAmmo);
+        WeaponReloadStop(this);
+        audio.Stop();
+        weaponModel.SetActive(false);
     }
 
     public void AddAmmo ()
@@ -131,6 +155,7 @@ public class Weapon : MonoBehaviour
         currentAmmo += maxAmmoInClip;
         if (currentAmmo > maxAmmoCount)
             currentAmmo = maxAmmoCount;
-        UIManager.instance.ShowAmmo(currentAmmoInClip, currentAmmo);
+
+        WeaponInfoChanged?.Invoke(this);
     }
 }

@@ -7,28 +7,46 @@ public class Health : MonoBehaviour
 {
     [SerializeField] private int maxHeatlh;
     [SerializeField] private HealthUI healthUI;
+    
     public bool IsAlive { get; private set; }
+    public int MaxHealth => this.maxHeatlh;
     private int currentHealth;
 
     [SerializeField] private UnityEvent OnDead;
+
+    public delegate void HealthChanged(float defuse, bool isDamaged=false);
+    public event HealthChanged OnHealthChanged;
+
+    public delegate void EnemyDead();
+    public event EnemyDead OnEnemyDead;
         
     private void Start()
     {
+        Refresh();
+    }
+
+    public void Refresh ()
+    {
+        if (healthUI!=null && !healthUI.gameObject.activeSelf)
+            healthUI.gameObject.SetActive(true);
         currentHealth = maxHeatlh;
         IsAlive = true;
-        healthUI.ShowUI(1f);    
+
+        OnHealthChanged?.Invoke((float)currentHealth / (float)maxHeatlh);
     }
 
     public void ApplyDamage (int damage)
     {
-        currentHealth -= damage;
-        if (currentHealth<=0)
+        if (IsAlive)
         {
-            IsAlive = false;
-            Dead();
+            currentHealth -= damage;
+            if (currentHealth <= 0)
+            {
+                IsAlive = false;
+                Dead();
+            }
+            OnHealthChanged?.Invoke((float)currentHealth / (float)maxHeatlh, true);
         }
-        float x = (float)currentHealth / (float)maxHeatlh;
-        healthUI.ShowUI(x);
     }
 
     public void RecoveryHealth (int health)
@@ -37,13 +55,21 @@ public class Health : MonoBehaviour
         if (currentHealth > maxHeatlh)
             currentHealth = maxHeatlh;
 
-        float x = (float)currentHealth / (float)maxHeatlh;
-        healthUI.ShowUI(x);
+        OnHealthChanged?.Invoke((float)currentHealth / (float)maxHeatlh);
     }
 
     private void Dead ()
     {
-        ResourseSpawner.instance.SpawnResourse(transform.position);
+        if (healthUI!=null)
+            healthUI.gameObject.SetActive(false);
         OnDead.Invoke();
+
+        if (OnEnemyDead!=null)
+            OnEnemyDead();
+    }
+
+    public int GetHealth()
+    {
+        return currentHealth;
     }
 }

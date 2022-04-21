@@ -1,24 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AutoRifle : Weapon
 {
     [Header ("AmmoRifleSettings")]
     [SerializeField] int damagePerShot;
+    [SerializeField] float bulletRadius;
 
-    public override void Shot()
+    protected override void Shot(Vector3 target)
     {
-        base.Shot();
-        
-        Ray ray = new Ray(transform.position, transform.forward);
-        RaycastHit hit;
+        CameraEffects.instance.ShakeCamera(0.5f, 0.1f);
 
-        if (Physics.Raycast(ray, out hit, 30))
+        Ray weaponRay = new Ray(transform.position, target-transform.position);
+
+        RaycastHit weaponHit;
+
+        if (Physics.SphereCast(weaponRay, bulletRadius, out weaponHit, float.MaxValue))
         {
-            if (hit.collider.CompareTag("Enemy"))
+            if (weaponHit.collider.CompareTag("Enemy"))
             {
-                hit.collider.GetComponent<Health>().ApplyDamage(damagePerShot);
+                ShowBlood(weaponHit.point);
+                weaponHit.collider.GetComponent<Health>().ApplyDamage(damagePerShot);
+            }
+
+            if (weaponHit.collider.CompareTag("Transformer"))
+            {
+                weaponHit.collider.GetComponent<Transformer>().Break();
             }
         }
     }
@@ -26,8 +32,5 @@ public class AutoRifle : Weapon
     private void Update()
     {
         CheckAmmo();
-
-        //Vector3 direction = transform.forward * 30;
-        //Debug.DrawRay(transform.position, direction, Color.red);
     }
 }

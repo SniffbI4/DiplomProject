@@ -2,10 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent (typeof(ActorView))]
 public class PlayerShoot : MonoBehaviour
 {
-    [SerializeField] private Weapon mainWeapon;
-    [SerializeField] private Weapon specialWeapon;
+    [SerializeField] private Weapon mainWeapon=default;
+    private Weapon specialWeapon=default;
+
+    public Weapon SpecialWeapon {
+        get
+        {
+            return this.specialWeapon;
+        }
+        set
+        {
+            this.specialWeapon = value;
+        }
+    }
 
     private Weapon currentWeapon;
 
@@ -13,6 +25,11 @@ public class PlayerShoot : MonoBehaviour
     {
         currentWeapon = mainWeapon;
         currentWeapon.TakeWeapon();
+        
+        // TO DO
+        // TakeWeapon вызывается 
+        // перед стартом классов Weapon
+        // поэтому в старте в UI отображается 0/0 патрон
     }
 
     public void ChangeWeapon ()
@@ -29,9 +46,9 @@ public class PlayerShoot : MonoBehaviour
         currentWeapon.TakeWeapon();
     }
 
-    public void Fire ()
+    public void Fire (Vector3 aimPosition)
     { 
-        currentWeapon.Fire();
+        currentWeapon.Fire(aimPosition);
     }
 
     public void ReloadWeapon ()

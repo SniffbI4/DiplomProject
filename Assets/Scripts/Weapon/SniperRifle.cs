@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SniperRifle : Weapon
@@ -7,16 +5,18 @@ public class SniperRifle : Weapon
     [Header("SniperRifleSettings")]
     [SerializeField] int damagePerShot;
     [SerializeField] int damageAbatement;
+    [SerializeField] float bulletRadius;
 
     private int damage;
 
-    public override void Shot()
+    protected override void Shot(Vector3 target)
     {
-        base.Shot();
-        Ray ray = new Ray(transform.position, transform.forward);
+        CameraEffects.instance.ShakeCamera(3, 0.1f);
+
+        Ray ray = new Ray(transform.position, target-transform.position);
         RaycastHit[] hits;
 
-        hits = Physics.RaycastAll(ray, 50);
+        hits = Physics.SphereCastAll(ray, bulletRadius, 100);
 
         damage = damagePerShot;
 
@@ -24,6 +24,7 @@ public class SniperRifle : Weapon
         {
             if (hits[i].collider.CompareTag("Enemy"))
             {
+                base.ShowBlood(hits[i].point);
                 hits[i].collider.GetComponent<Health>().ApplyDamage(damage);
                 damage -= damageAbatement;
             }
@@ -36,10 +37,6 @@ public class SniperRifle : Weapon
 
     private void Update()
     {
-        base.CheckAmmo();
-
-        Vector3 direction = transform.forward * 50;
-        Debug.DrawRay(transform.position, direction, Color.red);
+        CheckAmmo();
     }
-
 }

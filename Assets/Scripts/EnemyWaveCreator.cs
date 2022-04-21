@@ -1,13 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent (typeof(Timer))]
 public class EnemyWaveCreator : MonoBehaviour
 {
     [SerializeField] int enemyCountInWave;
 
     public int WaveLevel = 0;
-    private Timer timer;
     private int partOfWave=0;
 
     private void Start()

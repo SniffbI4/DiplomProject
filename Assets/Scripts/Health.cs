@@ -7,7 +7,9 @@ public class Health : MonoBehaviour
 {
     [SerializeField] private int maxHeatlh;
     [SerializeField] private HealthUI healthUI;
+    
     public bool IsAlive { get; private set; }
+    public int MaxHealth => this.maxHeatlh;
     private int currentHealth;
 
     [SerializeField] private UnityEvent OnDead;

@@ -8,8 +8,7 @@ public class WeaponUI : MonoBehaviour
     [SerializeField] private Image weaponSprite;
     [SerializeField] private Image deactivatedWeaponMask;
     [SerializeField] private Image progressBar;
-    [SerializeField] private Text ammoInCase;
-    [SerializeField] private Text allAmmo;
+    [SerializeField] private Text ammoText;
 
     private Weapon weapon;
     private float currentTime;
@@ -38,9 +37,8 @@ public class WeaponUI : MonoBehaviour
     private void UpdateWeaponUI (Weapon w)
     {
         CheckWeapon(w);
-
-        ammoInCase.text = weapon.currentAmmoInClip.ToString();
-        allAmmo.text = weapon.currentAmmo.ToString();
+        
+        ammoText.text = $"{weapon.currentAmmoInClip} / {weapon.currentAmmo}";
 
         float progressBarValue = (float)weapon.currentAmmoInClip / (float)weapon.maxAmmoInClip;
         progressBar.fillAmount = progressBarValue;

@@ -90,9 +90,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8240332859277831251}
-  - component: {fileID: 4691186115528819516}
   - component: {fileID: 8596273779619086189}
-  m_Layer: 0
+  - component: {fileID: 6782523533912430569}
+  m_Layer: 10
   m_Name: First_aid_kit_6_Mat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,19 +114,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4691186115528819516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8236438768919765341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3bfa00ca26cb054b98215371796126f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  recoveryHitPoints: 15
 --- !u!65 &8596273779619086189
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -140,3 +127,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 71.635925, y: 38.916233, z: 50.810307}
   m_Center: {x: 0.09844303, y: 20.125555, z: -0.40515363}
+--- !u!114 &6782523533912430569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8236438768919765341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8246529baee817e4d9de2740a7f015d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemType: 0
